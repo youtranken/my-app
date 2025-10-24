@@ -1,0 +1,20 @@
+index.html
+└── main.jsx
+    ├── AuthProvider
+    │    └── TaskProvider
+    │         └── BrowserRouter
+    │              └── AppRouter
+    │                   ├── LoginPage
+    │                   ├── DashboardPage
+    │                   └── ReportPage
+
+Thứ tự	Giai đoạn	Mô tả
+1️⃣	Trình duyệt tải index.html	Tạo <div id="root"> và gọi main.jsx
+2️⃣	Vite load main.jsx	Gọi ReactDOM.createRoot().render()
+3️⃣	React render <AuthProvider>	Tạo context cho user
+4️⃣	React render <TaskProvider>	Tạo context cho tasks
+5️⃣	React render <BrowserRouter>	Quản lý URL và navigation
+6️⃣	React render <AppRouter>	Quyết định page nào hiển thị
+7️⃣	Nếu /login → hiển thị LoginPage	
+8️⃣	Khi login() → set currentUser → router render DashboardPage	
+9️⃣	DashboardPage đọc TaskContext để hiển thị công việc   
