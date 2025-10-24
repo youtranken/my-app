@@ -3,21 +3,33 @@ import { TaskContext } from '../context/TaskContext.js';
 import { initialTasks, initialColumns } from '../data/initial-data.js';
 import { useAuth } from '../hooks/useAuth.js';
 
+const readStorage = (key, fallback) => {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const saved = window.localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch (error) {
+    console.warn(`Không thể đọc ${key} từ localStorage:`, error);
+    return fallback;
+  }
+};
+
 export default function TaskProvider({ children }) {
   const { currentUser } = useAuth();
 
-  const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem('tasks');
-    return saved ? JSON.parse(saved) : initialTasks;
-  });
+  const [tasks, setTasks] = useState(() => readStorage('tasks', initialTasks));
 
-  const [columns, setColumns] = useState(() => {
-    const saved = localStorage.getItem('columns');
-    return saved ? JSON.parse(saved) : initialColumns;
-  });
+  const [columns, setColumns] = useState(() => readStorage('columns', initialColumns));
 
-  useEffect(() => { localStorage.setItem('tasks', JSON.stringify(tasks)); }, [tasks]);
-  useEffect(() => { localStorage.setItem('columns', JSON.stringify(columns)); }, [columns]);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('columns', JSON.stringify(columns));
+  }, [columns]);
 
   const addTask = ({ content, assignedTo }) => {
     const id = `t-${Date.now()}`;

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { USERS } from '../data/initial-data.js'
 
-export default function AddTaskModal({ open, onClose, onSubmit }) {
+export default function AddTaskModal({ open, onClose, onSubmit, defaultAssignee }) {
   const [content, setContent] = useState('')
   const [assignee, setAssignee] = useState(USERS[0]?.id || '')
 
   useEffect(() => {
     if (open) {
       setContent('')
-      setAssignee(USERS[0]?.id || '')
+      setAssignee(defaultAssignee || USERS[0]?.id || '')
     }
-  }, [open])
+  }, [open, defaultAssignee])
 
   if (!open) return null
 

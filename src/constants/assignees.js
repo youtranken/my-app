@@ -1,0 +1,1 @@
+export const ALL_ASSIGNEES_KEY = 'all';
